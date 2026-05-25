@@ -9,8 +9,9 @@ Phân hệ giao diện chính đã được xây dựng hoàn thiện với bả
 ## Hình ảnh kết quả chạy trên máy ảo:
 
 <p align="center">
-  <img src="<img width="320" height="667" alt="image" src="https://github.com/user-attachments/assets/b702d13d-abe0-4c64-b7d0-5fd88e6a3283" />" width="45%">
-  <img src="<img width="298" height="643" alt="image" src="https://github.com/user-attachments/assets/530f00e5-f175-4fa4-a2da-2bcb14fa6ef2" />
-" width="45%">
+  <img src="https://github.com/user-attachments/assets/70c373cf-8c14-4f96-9bcb-47e8ec130224" width="45%">
+  <img src="https://github.com/user-attachments/assets/da59d6e1-d097-46ca-b8fe-b1dc6b8e0b60" width="45%">
 </p>
+
+
 
