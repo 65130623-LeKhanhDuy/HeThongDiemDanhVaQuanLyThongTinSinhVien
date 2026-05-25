@@ -28,15 +28,12 @@ public class TrangChuFragment extends Fragment {
         tvTongSV = view.findViewById(R.id.tvTongSV);
         tvDaDiemDanh = view.findViewById(R.id.tvDaDiemDanh);
 
-        // Lấy ngày hiện tại của hệ thống để làm mốc truy vấn dữ liệu điểm danh hôm nay
         SimpleDateFormat sdf = new SimpleDateFormat("dd_MM_yyyy", Locale.getDefault());
         String ngayHienTai = sdf.format(new Date());
 
         refSinhVien = FirebaseDatabase.getInstance().getReference("SinhVien");
-        // Kết nối thẳng tới nhánh của ngày hôm nay trên mạng
         refDiemDanh = FirebaseDatabase.getInstance().getReference("DiemDanh").child(ngayHienTai);
 
-        // Đếm tổng số sinh viên
         refSinhVien.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -49,7 +46,6 @@ public class TrangChuFragment extends Fragment {
             }
         });
 
-        // Đếm số người có mặt TRONG NGÀY HÔM NAY
         refDiemDanh.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

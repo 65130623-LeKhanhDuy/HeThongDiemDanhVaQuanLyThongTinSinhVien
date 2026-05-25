@@ -1,18 +1,20 @@
 package com.example.hethongdiemdanhvaquanlysinhvien1;
 
+import android.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import com.google.firebase.database.FirebaseDatabase;
 import java.util.List;
 
 public class SinhVienAdapter extends RecyclerView.Adapter<SinhVienAdapter.SinhVienViewHolder> {
 
-    // Tên biến là danhSachSinhVien
     private List<SinhVien> danhSachSinhVien;
 
     public SinhVienAdapter(List<SinhVien> danhSachSinhVien) {
@@ -34,20 +36,49 @@ public class SinhVienAdapter extends RecyclerView.Adapter<SinhVienAdapter.SinhVi
         holder.tvHoTen.setText(sv.getHoTen());
         holder.tvMaSV.setText("Mã SV: " + sv.getMaSV());
 
-        // Đánh dấu check vào nút Có hoặc Vắng tùy theo dữ liệu
         if (sv.isCoMat()) {
             holder.rbCoMat.setChecked(true);
         } else {
             holder.rbVangMat.setChecked(true);
         }
 
-        // Bắt sự kiện khi giảng viên đổi trạng thái điểm danh
         holder.rgDiemDanh.setOnCheckedChangeListener((group, checkedId) -> {
             if (checkedId == R.id.rbCoMat) {
                 sv.setCoMat(true);
             } else if (checkedId == R.id.rbVangMat) {
                 sv.setCoMat(false);
             }
+        });
+
+
+        holder.itemView.setOnLongClickListener(v -> {
+            // Khởi tạo hộp thoại xác nhận bằng Context của chính dòng vừa ấn
+            AlertDialog.Builder builder = new AlertDialog.Builder(holder.itemView.getContext());
+            builder.setTitle("Xóa Sinh Viên Khỏi Lớp");
+            builder.setMessage("Thầy có chắc chắn muốn xóa sinh viên " + sv.getHoTen() + " (Mã SV: " + sv.getMaSV() + ") khỏi danh sách lớp học không?");
+
+
+            builder.setPositiveButton("XÓA NGAY", (dialog, which) -> {
+
+                FirebaseDatabase.getInstance()
+                        .getReference("SinhVien")
+                        .child(sv.getMaSV())
+                        .removeValue()
+                        .addOnSuccessListener(aVoid -> {
+                            Toast.makeText(holder.itemView.getContext(), "Đã xóa thành công sinh viên " + sv.getHoTen(), Toast.LENGTH_SHORT).show();
+                        })
+                        .addOnFailureListener(e -> {
+                            Toast.makeText(holder.itemView.getContext(), "Lỗi hệ thống mạng, chưa thể xóa!", Toast.LENGTH_SHORT).show();
+                        });
+            });
+
+
+            builder.setNegativeButton("HỦY BỎ", (dialog, which) -> dialog.dismiss());
+
+
+            builder.show();
+
+            return true;
         });
     }
 
@@ -72,9 +103,7 @@ public class SinhVienAdapter extends RecyclerView.Adapter<SinhVienAdapter.SinhVi
         }
     }
 
-    // Hàm này giúp Adapter nhận danh sách mới (đã lọc) và vẽ lại màn hình
     public void filterList(List<SinhVien> filteredList) {
-        // Đã sửa lại cho khớp đúng tên biến ở trên
         this.danhSachSinhVien = filteredList;
         notifyDataSetChanged();
     }

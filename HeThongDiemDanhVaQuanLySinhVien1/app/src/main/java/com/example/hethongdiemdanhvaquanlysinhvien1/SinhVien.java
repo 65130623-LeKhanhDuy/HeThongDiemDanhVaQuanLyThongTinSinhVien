@@ -3,7 +3,7 @@ package com.example.hethongdiemdanhvaquanlysinhvien1;
 public class SinhVien {
     private String maSV;
     private String hoTen;
-    private boolean isCoMat; // true là có mặt, false là vắng mặt
+    private boolean isCoMat;
 
     public SinhVien(String maSV, String hoTen, boolean isCoMat) {
         this.maSV = maSV;

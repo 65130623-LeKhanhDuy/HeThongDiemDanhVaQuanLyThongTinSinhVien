@@ -19,19 +19,17 @@ public class MainActivity extends AppCompatActivity {
 
         thanhDieuHuong = findViewById(R.id.thanhDieuHuong);
 
-        // Mặc định hiển thị màn hình Trang Chủ khi vừa mở ứng dụng
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.khungChuaFragment, new TrangChuFragment())
                     .commit();
         }
 
-        // Bắt sự kiện người dùng bấm chuyển các tab dưới đáy màn hình
         thanhDieuHuong.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 Fragment phanManhDuocChon = null;
-                int idNut = item.getItemId(); // Chữ I đã được viết hoa chuẩn xác
+                int idNut = item.getItemId();
 
                 if (idNut == R.id.mnuTrangChu) {
                     phanManhDuocChon = new TrangChuFragment();
