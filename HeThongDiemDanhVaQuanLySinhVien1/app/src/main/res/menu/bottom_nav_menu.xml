@@ -2,11 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/mnuTrangChu"
+        android:icon="@drawable/ic_home"
         android:title="Trang chủ" />
     <item
         android:id="@+id/mnuDiemDanh"
+        android:icon="@drawable/ic_diem_danh"
         android:title="Điểm danh" />
     <item
         android:id="@+id/mnuHoSo"
+        android:icon="@drawable/ic_ho_so"
         android:title="Hồ sơ" />
 </menu>
