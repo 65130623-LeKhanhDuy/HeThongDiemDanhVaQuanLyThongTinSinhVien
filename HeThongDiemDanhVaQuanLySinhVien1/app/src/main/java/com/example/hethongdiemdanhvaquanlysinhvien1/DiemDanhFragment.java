@@ -26,6 +26,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.text.Normalizer;
+import java.util.regex.Pattern;
 
 public class DiemDanhFragment extends Fragment {
 
@@ -150,12 +152,27 @@ public class DiemDanhFragment extends Fragment {
 
     private void filter(String text) {
         List<SinhVien> filteredList = new ArrayList<>();
+        String tuKhoaDaLoc = loaiBoDauTiengViet(text);
         for (SinhVien item : danhSach) {
-            if (item.getHoTen().toLowerCase().contains(text.toLowerCase()) ||
+            String tenDaLoc = loaiBoDauTiengViet(item.getHoTen());
+            if (tenDaLoc.contains(tuKhoaDaLoc) ||
                     item.getMaSV().toLowerCase().contains(text.toLowerCase())) {
                 filteredList.add(item);
             }
         }
         adapter.filterList(filteredList);
+    }
+
+    private String loaiBoDauTiengViet(String str) {
+        if (str == null) return "";
+        try {
+            String temp = Normalizer.normalize(str, Normalizer.Form.NFD);
+            Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+            return pattern.matcher(temp).replaceAll("")
+                    .replace('đ', 'd').replace('Đ', 'D')
+                    .toLowerCase();
+        } catch (Exception e) {
+            return str.toLowerCase();
+        }
     }
 }
