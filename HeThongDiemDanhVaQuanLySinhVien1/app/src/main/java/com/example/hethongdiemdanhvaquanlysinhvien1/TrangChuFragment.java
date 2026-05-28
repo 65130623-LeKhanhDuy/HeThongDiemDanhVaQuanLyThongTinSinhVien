@@ -18,15 +18,19 @@ import java.util.Locale;
 
 public class TrangChuFragment extends Fragment {
 
-    private TextView tvTongSV, tvDaDiemDanh;
+    private TextView tvTongSV, tvDaDiemDanh, tvVangMat;
     private DatabaseReference refSinhVien, refDiemDanh;
+    private int tongSoSinhVien = 0;
+    private int soSinhVienCoMat = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_trang_chu, container, false);
 
+
         tvTongSV = view.findViewById(R.id.tvTongSV);
         tvDaDiemDanh = view.findViewById(R.id.tvDaDiemDanh);
+        tvVangMat = view.findViewById(R.id.tvVangMat);
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd_MM_yyyy", Locale.getDefault());
         String ngayHienTai = sdf.format(new Date());
@@ -37,14 +41,16 @@ public class TrangChuFragment extends Fragment {
         refSinhVien.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                long tongSo = snapshot.getChildrenCount();
-                tvTongSV.setText(String.valueOf(tongSo));
+                tongSoSinhVien = (int) snapshot.getChildrenCount();
+                tvTongSV.setText(String.valueOf(tongSoSinhVien));
+                capNhatVangMat();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
             }
         });
+
 
         refDiemDanh.addValueEventListener(new ValueEventListener() {
             @Override
@@ -56,7 +62,9 @@ public class TrangChuFragment extends Fragment {
                         demCoMat++;
                     }
                 }
-                tvDaDiemDanh.setText(String.valueOf(demCoMat));
+                soSinhVienCoMat = demCoMat;
+                tvDaDiemDanh.setText(String.valueOf(soSinhVienCoMat));
+                capNhatVangMat();
             }
 
             @Override
@@ -65,5 +73,19 @@ public class TrangChuFragment extends Fragment {
         });
 
         return view;
+    }
+
+
+    private void capNhatVangMat() {
+        int soVang = tongSoSinhVien - soSinhVienCoMat;
+
+
+        if (soVang < 0) {
+            soVang = 0;
+        }
+
+        if (tvVangMat != null) {
+            tvVangMat.setText(String.valueOf(soVang));
+        }
     }
 }
